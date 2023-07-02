@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hasil Crop</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+  </head>
+  <body>
+    <div class="container mx-auto my-5">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-6">
+                <div class="card">
+                    <img src="{{ url_for('static', filename='uploads/' + filename) }}" id="croppedImage" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Result</h5>
+                        <div class="btn btn-primary" id="saveImage"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
+                        <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                        <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+                        </svg>&nbsp;&nbsp;Save</div>
+                        <a href="{{ url_for('index') }}" class="btn btn-success">Try Another Image</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const croppedImage = document.getElementById('croppedImage');
+        const saveImage = document.getElementById('saveImage');
+        saveImage.addEventListener('click', function() {
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            canvas.width = croppedImage.naturalWidth;
+            canvas.height = croppedImage.naturalHeight;
+            context.drawImage(croppedImage, 0, 0);
+            const link = document.createElement('a');
+            link.download = "{{ filename }}";
+            link.href = canvas.toDataURL();
+            link.click();
+        });
+    </script>
+  </body>
+</html>
